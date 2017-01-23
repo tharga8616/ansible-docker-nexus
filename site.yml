@@ -1,0 +1,6 @@
+- hosts: nexus
+  roles:
+    - { role: install-docker-nexus, tags: [ 'install-docker-nexus' ] }
+    - { role: xe-deploy, tags: [ 'xe-deploy' ] }
+
+
