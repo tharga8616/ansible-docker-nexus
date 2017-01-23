@@ -1,0 +1,30 @@
+---
+# tasks file for install-docker
+- name: Check if docker repository already exist
+  stat: path=/etc/yum.repos.d/docker.repo
+  register: dockerrepocreated
+
+- name: Install yum-utils
+  yum: name=yum-utils state=present
+  when: not dockerrepocreated.stat.exists
+
+- name: Add Docker repository
+  command: "yum-config-manager --add-repo  https://docs.docker.com/engine/installation/linux/repo_files/centos/docker.repo"
+  when: not dockerrepocreated.stat.exists
+
+
+# No instalar latest. Para entornos de producción elegir una versión concreta. Modificar
+- name: Install Docker
+  yum: name=docker-engine state=present
+
+- name: Start Docker service 
+  service: name=docker state=started
+   
+- name: Install git
+  yum: name=git state=present
+
+- name: Download Nexus git repo
+  git: repo=https://github.com/sonatype/docker-nexus3 dest=/tmp/gitnexus
+
+- name: Run Nexus container
+  command: "docker run -d -p 8081:8081 --name nexus sonatype/nexus3"
