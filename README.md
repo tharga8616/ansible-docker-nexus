@@ -1,5 +1,5 @@
-# ansible-docker-nexus
 Deployment of dockerized Nexus3 for Centos with ansible.
+========================================================
 
 Edit your /etc/ansible/hosts file to point the machine where you wish to deploy Nexus.
 
